@@ -17,7 +17,7 @@ wget https://raw.githubusercontent.com/Tearran/picorder-config/master/picorder-c
 
 - Enable i2c
 - Enable spi
-- Add Userspace ~/./local/bin to path
+- Add Userspace $HOME/.local/bin to path
 - Download picorderOs
 - Update apt
 - Install requiered libraries
