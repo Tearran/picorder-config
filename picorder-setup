@@ -1,0 +1,69 @@
+#!/bin/bash
+# Clear the screen
+clear
+TERM=ansi
+# Theme setting dark comment to enable system colors
+theme="dark:0"
+
+if [ $theme = "dark:0" ]; then
+  export NEWT_COLORS='
+    root=white,black
+    window=white,black
+    textbox=white,black
+    title=white,black
+    listbox=white,black
+    sellistbox=black,yellow
+    actsellistbox=black,yellow
+    border=black,blue
+    actbutton=black,green
+    button=white,black
+    '
+fi
+# Language strings
+message="  Welcome to picorderOS  "
+title=" piCorder installer "
+verInfo="thisver " #TODO
+txtMenu01="Install      This will install and configure picorderOS"
+txtMenu02="Configure    TODO:"
+txtAbout="About        About this tool"
+txtHelloWorld=" Hello World: "
+txtWelcome="Welcome to piCorder-config: "
+txtExit="Exit "
+txtJobsDone="piCorderOS v2 Installed. type piCorderOS to launch "
+txtContinueY=" Continue "
+txtContinueN=" Back "
+txtRequierments=" Press Continue to Download and install picorderOS v2?  " #PTODO list About subpage!?
+aboutConfig=" This tool aims to easly initial configuration piCorderOs. $verInfo "
+
+function setup108 {
+if (whiptail --fb --title "$message" --yesno "$txtRequierments" 20 60 --no-button "$txtExit" --yes-button "$txtContinueY"); then
+  if (whiptail --title "$message P.2 " --infobox "updating apt" 8 78); then
+    sudo apt update
+  fi
+  if (whiptail --title "$message P.3 " --infobox "Installing git pip3 smbus and sdl" 8 78); then
+    sudo apt install -y git python3-pip python3-smbus
+    sudo apt install -y libatlas-base-dev libopenjp2-7-dev libsdl2-dev libtiff5 libsdl-ttf2.0-dev
+    sudo apt install -y libsdl-gfx1.2-5 libsdl-image1.2 libsdl-kitchensink1 libsdl-mixer1.2 libsdl-sound1.2 libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0
+  fi
+  if (whiptail --title "$message P.4 " --infobox "Enabiling i2c and spi" 8 78); then
+    echo " "
+    sudo sed -i -e 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt && sudo sed -i -e 's/#dtparam=spi=on/dtparam=spi=on/g' /boot/config.txt
+  fi
+  if (whiptail --title "$message P.5 " --infobox "Downloading piCorderOS source" 8 78 ); then
+    if (ls $HOME/.local/include/picorderOS/);then
+      echo "exist";
+    else
+      cd $HOME/.local/include/ && git clone https://github.com/tearran/picorderOS.git
+      cd $HOME/.local/include/picorderOS/ && python3 -m pip install -r requirements.txt
+    fi
+  fi
+  if(whiptail --title "$message P.6 " --infobox "Instaling cli launcher TODO:Create sysctrl service" 8 78); then
+    echo"python3 $HOME/.local/include/picorderOS/main.py" >> $HOME/.local/bin/piCorderOS
+  fi
+  if(whiptail --fb  --title "$title" --msgbox "$txtJobsDone" 20 60); then
+    echo"Jobs Done"
+  fi
+fi
+}
+
+setup108
