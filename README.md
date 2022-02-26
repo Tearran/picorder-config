@@ -1,6 +1,6 @@
 # picorder-config
 
-picorder-config is a set shell commands that aim to install and configure [piCorderOS](https://github.com/directive0/picorderOS)
+picorder-config is a set shell commands that aim to install, configure and, add customization to [piCorderOS](https://github.com/directive0/picorderOS)
 
 # instalation:
 Curl 
