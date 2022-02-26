@@ -37,7 +37,7 @@ aboutConfig=" This tool aims to install the picorderOS and easly initial configu
 function setup108 {
 
 if (whiptail --fb --title "$message" --yesno "$txtRequierments" 20 60 --no-button "$txtExit" --yes-button "$txtContinueY"); then
-<<<<<<< HEAD
+
   if ( -f "$HOME/.local/bin/" );then
     echo "This file exists on your filesystem." &> log | whiptail --gauge "$txtPleaseWait  Setting piCorderos PATH" 10 60 10
     export PATH="$HOME/.local/bin/"
@@ -48,13 +48,12 @@ if (whiptail --fb --title "$message" --yesno "$txtRequierments" 20 60 --no-butto
     export PATH="$HOME/.local/bin/"
   else
 
->>>>>>> ba20140a91195b9c72b880cf0783a8aad47b6a5c
     mkdir "$HOME/.local/" &> log | whiptail --gauge "$txtPleaseWait  Setting piCorderOS PATH .loacal" 10 60 2
     mkdir "$HOME/.local/include/" &> log | whiptail --gauge "$txtPleaseWait  Setting piCorderOS PATH local/include/" 10 60 4
     mkdir "$HOME/.local/bin/" &> log | whiptail --gauge "$txtPleaseWait  Setting piCorderos PATH .local/bin/" 10 60 6
     export PATH="$HOME/.local/bin/" &> log | whiptail --gauge "$txtPleaseWait  Exporting picorderOS PATH .local/bin" 10 60 8
     mkdir "$HOME/.local/lib/"  &> log | whiptail --gauge "$txtPleaseWait  Setting piCorderOS PATH .loacal/lib" 10 60 10
-<<<<<<< HEAD
+
   fi
 fi
 
@@ -62,7 +61,7 @@ fi
 
 fi
 
->>>>>>> ba20140a91195b9c72b880cf0783a8aad47b6a5c
+
      sudo apt update &> log | whiptail --gauge "Please wait Updating repository" 10 60 5 #todo:Gauge %
      sudo apt install -y git python3-pip python3-smbus &> log | whiptail --gauge "$txtPleaseWait  installing system Requierments" 10 60 25
      sudo apt install -y libatlas-base-dev libopenjp2-7-dev libsdl2-dev libtiff5 libsdl-ttf2.0-dev &> log | whiptail --gauge "$txtPlease  installing SDL Base" 10 60 35
