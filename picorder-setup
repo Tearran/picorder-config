@@ -70,10 +70,12 @@ if (whiptail --fb --title "$message" --yesno "$txtRequierments" 20 60 --no-butto
     chmod 755 $HOME/.local/bin/piCorderOS &> log | whiptail --gauge "$txtPleaseWaitwhile installing" 20 60 92
     cp "$HOME/.local/include/picorder-config/picorder-config" > $HOME/.local/bin/picorder-config &> $HOME/log | whiptail --gauge "$txtPleaseWait installing picorder-config system launcher" 20 60 95
     chmod 755 $HOME/.local/include/picorder-config/picorder-config &> log | whiptail --gauge "$txtPleaseWaitwhile installing" 20 60 100
+  fi
 fi
-Clear
-exit
+
 }
 
 piCorPATH();
 setup108();
+Clear
+exit
