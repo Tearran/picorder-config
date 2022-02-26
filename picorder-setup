@@ -49,8 +49,9 @@ if (whiptail --fb --title "$message" --yesno "$txtRequierments" 20 60 --no-butto
       cd $HOME/.local/include/ && git clone https://github.com/Tearran/picorder-config.git &> log | whiptail --gauge "$txtPleaseWaitwhile installing picorder-config" 20 60 80
       cd $HOME/.local/include/ && git clone https://github.com/tearran/picorderOS.git &> log | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS" 20 60 85
       cd $HOME/.local/include/picorderOS/ && python3 -m pip install -r requirements.txt &> log | whiptail --gauge "$txtPleaseWaitwhile installing python requirements" 20 60 90
-    elif [[ ls  $HOME/.local/]]; then
-      nano
+    else
+      echo "no .local"
+      exit
       #statements
     fi
 
