@@ -42,7 +42,7 @@ if (whiptail --fb --title "$message" --yesno "$txtRequierments" 20 60 --no-butto
     echo "This file exists on your filesystem." &> log | whiptail --gauge "$txtPleaseWait  Setting piCorderos PATH" 10 60 10
     export PATH="$HOME/.local/bin/"
   else
-    if [[ -f "$HOME/.local/bin/" ]]then
+    if ( -f "$HOME/.local/bin/" );then
       echo "This file exists on your filesystem." &> log | whiptail --gauge "$txtPleaseWait  Setting piCorderos PATH" 10 60 10
       export PATH="$HOME/.local/bin/"
     else
@@ -71,7 +71,7 @@ if (whiptail --fb --title "$message" --yesno "$txtRequierments" 20 60 --no-butto
       exit
       #statements
     fi
-    
+
     mv log $HOME/.local/include/picorder-config/log
     echo "python3 $HOME/.local/include/picorderOS/main.py" > $HOME/.local/bin/piCorderOS &> log | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS system launcher" 20 60 91
     chmod 755 $HOME/.local/bin/piCorderOS &> log | whiptail --gauge "$txtPleaseWaitwhile installing" 20 60 92
