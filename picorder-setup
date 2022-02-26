@@ -57,12 +57,14 @@ if (whiptail --fb --title "$message" --yesno "$txtRequierments" 20 60 --no-butto
   sudo sed -i -e 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt && sudo sed -i -e 's/#dtparam=spi=on/dtparam=spi=on/g' /boot/config.txt
 
   if (ls $HOME/.local/include);then
-  cd $HOME/.local/include/ && git clone https://github.com/Tearran/picorder-config.git &> $HOME/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorder-config" 20 60 80
-  cd $HOME/.local/include/ && git clone https://github.com/tearran/picorderOS.git &> $HOME/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS" 20 60 85
-  cd $HOME/.local/include/picorderOS/ && python3 -m pip install -r requirements.txt &> $HOME/log | whiptail --gauge "$txtPleaseWaitwhile installing python requirements" 20 60 90
+    cd $HOME/.local/include/ && git clone https://github.com/Tearran/picorder-config.git &> $HOME/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorder-config" 20 60 80
+    cd $HOME/.local/include/ && git clone https://github.com/tearran/picorderOS.git &> $HOME/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS" 20 60 85
+    cd $HOME/.local/include/picorderOS/ && python3 -m pip install -r requirements.txt &> $HOME/log | whiptail --gauge "$txtPleaseWaitwhile installing python requirements" 20 60 90
   else
-  exit
-  #statements
+    piCorPATH();
+    cd $HOME/.local/include/ && git clone https://github.com/Tearran/picorder-config.git &> $HOME/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorder-config" 20 60 80
+    cd $HOME/.local/include/ && git clone https://github.com/tearran/picorderOS.git &> $HOME/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS" 20 60 85
+    cd $HOME/.local/include/picorderOS/ && python3 -m pip install -r requirements.txt &> $HOME/log | whiptail --gauge "$txtPleaseWaitwhile installing python requirements" 20 60 90
   fi
   if ( -f "$HOME/.local/" );then
     mv log $HOME/.local/include/picorder-config/log
@@ -75,7 +77,7 @@ fi
 
 }
 
-piCorPATH();
+
 setup108();
 Clear
 exit
