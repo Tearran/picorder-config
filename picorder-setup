@@ -32,7 +32,7 @@ txtExit="Exit "
 txtJobsDone="piCorderOS Installed. To launch type piCorderOS  "
 txtContinueY=" Continue "
 txtContinueN=" Back "
-txtRequierments=" Press Continue to Download and install picorderOS v2?  " #PTODO list About subpage!?
+txtRequierments=" Press Continue to Download and install picorderOS?  " #PTODO list About subpage!?
 aboutConfig=" This tool aims to easly initial configuration piCorderOs. $verInfo "
 
 function setup108 {
