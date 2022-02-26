@@ -61,7 +61,7 @@ if (whiptail --fb --title "$message" --yesno "$txtRequierments" 20 60 --no-butto
     cd $HOME/.local/include/ && git clone https://github.com/tearran/picorderOS.git &> $HOME/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS" 20 60 85
     cd $HOME/.local/include/picorderOS/ && python3 -m pip install -r requirements.txt &> $HOME/log | whiptail --gauge "$txtPleaseWaitwhile installing python requirements" 20 60 90
   else
-    piCorPATH();
+    piCorPATH()
     cd $HOME/.local/include/ && git clone https://github.com/Tearran/picorder-config.git &> $HOME/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorder-config" 20 60 80
     cd $HOME/.local/include/ && git clone https://github.com/tearran/picorderOS.git &> $HOME/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS" 20 60 85
     cd $HOME/.local/include/picorderOS/ && python3 -m pip install -r requirements.txt &> $HOME/log | whiptail --gauge "$txtPleaseWaitwhile installing python requirements" 20 60 90
@@ -76,8 +76,7 @@ if (whiptail --fb --title "$message" --yesno "$txtRequierments" 20 60 --no-butto
 fi
 
 }
+setup108()
 
-
-setup108();
 Clear
 exit
