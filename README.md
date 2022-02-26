@@ -3,7 +3,6 @@
 picorder-config is a set shell commands that aim to install and configure [piCorderOS](https://github.com/directive0/picorderOS)
 
 # instalation:
-Feb 23 2022 
 Curl 
 ```bash 
 curl https://raw.githubusercontent.com/Tearran/picorder-config/master/picorder-setup | bash 
