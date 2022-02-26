@@ -39,6 +39,7 @@ if (whiptail --fb --title "$message" --yesno "$txtRequierments" 20 60 --no-butto
 
     sudo apt update &> log | whiptail --gauge "Please wait Updating repository" 10 60 5 #todo:Gauge %
     sudo apt install -y git python3-pip python3-smbus &> log | whiptail --gauge "$txtPleaseWait  installing system Requierments" 10 60 25
+    python3 -m pip install sense_hat==2.2.0
     sudo apt install -y libatlas-base-dev libopenjp2-7-dev libsdl2-dev libtiff5 libsdl-ttf2.0-dev &> log | whiptail --gauge "$txtPlease  installing SDL Base" 10 60 35
     sudo apt install -y libsdl-gfx1.2-5 libsdl-image1.2 libsdl-kitchensink1 libsdl-mixer1.2 libsdl-sound1.2 &> log | whiptail --gauge "$txtPleaseWait  installing SDL GFX " 10 60 50
     sudo apt install -y libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0 &> log | whiptail --gauge "$txtPleaseWaitwhile installing SDL GFX continue " 10 60 75
