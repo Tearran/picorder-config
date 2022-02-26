@@ -58,10 +58,10 @@ if (whiptail --fb --title "$message" --yesno "$txtRequierments" 20 60 --no-butto
     fi
   fi
   if(whiptail --title "$message P.6 " --infobox "Instaling cli launcher TODO:Create sysctrl service" 8 78); then
-    echo"python3 $HOME/.local/include/picorderOS/main.py" >> $HOME/.local/bin/piCorderOS
+    echo "python3 $HOME/.local/include/picorderOS/main.py" >> $HOME/.local/bin/piCorderOS
   fi
   if(whiptail --fb  --title "$title" --msgbox "$txtJobsDone" 20 60); then
-    echo"Jobs Done"
+    echo "Jobs Done"
   fi
 fi
 }
