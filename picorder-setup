@@ -31,52 +31,52 @@ txtContinueY="Continue"
 txtContinueN="Back"
 txtPlzWait="Please Wait.."
 txtRequierments=" This tool will install the picorderOS system, picorder-config. Use a new install or risk loosing data" #TODO About subpage
-aboutConfig=" This tool aims to install the picorderOS and easly initial configuration. $verInfo "
+txtabout=" This tool aims to install the picorderOS and easly initial configuration. $verInfo "
 
-function piCorPATH() {
-  if ( -f "$HOME/.local/bin/" );then
-    echo "This file exists on your filesystem." &> $HOME/log | whiptail --gauge "$txtPleaseWait  Setting piCorderos PATH" 10 60 10
-    export PATH="$HOME/.local/bin/"
-  else
-    mkdir "$HOME/.local/" &> $HOME/log | whiptail --gauge "$txtPleaseWait  Setting piCorderOS PATH .loacal" 10 60 2
-    mkdir "$HOME/.local/include/" &> $HOME/log | whiptail --gauge "$txtPleaseWait  Setting piCorderOS PATH local/include/" 10 60 4
-    mkdir "$HOME/.local/bin/" &> $HOME/log | whiptail --gauge "$txtPleaseWait  Setting piCorderos PATH .local/bin/" 10 60 6
-    export PATH="$HOME/.local/bin/" &> $HOME/log | whiptail --gauge "$txtPleaseWait  Exporting picorderOS PATH .local/bin" 10 60 8
-    mkdir "$HOME/.local/lib/"  &> $HOME/log | whiptail --gauge "$txtPleaseWait  Setting piCorderOS PATH .loacal/lib" 10 60 10
-  fi
-}
-function setup108() {
+setup_environment() {
+[ ! -d "$HOME/.local" ] && mkdir "$HOME/.local/" | tee -a "$HOME/log" | whiptail --gauge "$txtPleaseWait  Setting piCorderos PATH" 10 60 10
+[ ! -d "$HOME/.local/bin/" ] && mkdir "$HOME/.local/bin/" | tee -a "$HOME/log" | whiptail --gauge "$txtPleaseWait  Setting piCorderOS PATH .loacal" 10 60 2
+[ ! -d "$HOME/.local/lib/" ] && mkdir "$HOME/.local/lib/" | tee -a "$HOME/log" | whiptail --gauge "$txtPleaseWait  Setting piCorderOS PATH local/include/" 10 60 4
+[ ! -d "$HOME/.local/include/" ] && mkdir "$HOME/.local/include/" | tee -a "$HOME/log" | whiptail --gauge "$txtPleaseWait  Setting piCorderos PATH .local/bin/" 10 60 6
 
-if (whiptail --fb --title "$message" --yesno "$txtRequierments" 20 60 --no-button "$txtExit" --yes-button "$txtContinueY"); then
-  sudo apt update &> $HOME/log | whiptail --gauge "Please wait Updating repository" 10 60 15 #todo:Gauge %
-  sudo apt install -y git python3-pip python3-smbus &> $HOME/log | whiptail --gauge "$txtPleaseWait  installing system Requierments" 10 60 20
-  sudo apt install -y libatlas-base-dev libopenjp2-7-dev libsdl2-dev libtiff5 libsdl-ttf2.0-dev &> $HOME/log | whiptail --gauge "$txtPlease  installing SDL Base" 10 60 35
-  sudo apt install -y libsdl-gfx1.2-5 libsdl-image1.2 libsdl-kitchensink1 libsdl-mixer1.2 libsdl-sound1.2 &> $HOME/log | whiptail --gauge "$txtPleaseWait  installing SDL GFX " 10 60 50
-  sudo apt install -y libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0 &> $HOME/log | whiptail --gauge "$txtPleaseWaitwhile installing SDL GFX continue " 10 60 75
-  echo "Enableing i2c spi" &> log | whiptail --gauge "$txtPleaseWaitwhile Enableing i2c and spi" 10 60 76
-  sudo sed -i -e 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt && sudo sed -i -e 's/#dtparam=spi=on/dtparam=spi=on/g' /boot/config.txt
-
-  if (ls $HOME/.local/include);then
-    cd $HOME/.local/include/ && git clone https://github.com/Tearran/picorder-config.git &> $HOME/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorder-config" 20 60 80
-    cd $HOME/.local/include/ && git clone https://github.com/tearran/picorderOS.git &> $HOME/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS" 20 60 85
-    cd $HOME/.local/include/picorderOS/ && python3 -m pip install -r requirements.txt &> $HOME/log | whiptail --gauge "$txtPleaseWaitwhile installing python requirements" 20 60 90
-  else
-    piCorPATH()
-    cd $HOME/.local/include/ && git clone https://github.com/Tearran/picorder-config.git &> $HOME/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorder-config" 20 60 80
-    cd $HOME/.local/include/ && git clone https://github.com/tearran/picorderOS.git &> $HOME/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS" 20 60 85
-    cd $HOME/.local/include/picorderOS/ && python3 -m pip install -r requirements.txt &> $HOME/log | whiptail --gauge "$txtPleaseWaitwhile installing python requirements" 20 60 90
-  fi
-  if ( -f "$HOME/.local/" );then
-    mv log $HOME/.local/include/picorder-config/log
-    echo "python3 $HOME/.local/include/picorderOS/main.py" > $HOME/.local/bin/piCorderOS &> $HOME/log | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS system launcher" 20 60 91
-    chmod 755 $HOME/.local/bin/piCorderOS &> log | whiptail --gauge "$txtPleaseWaitwhile installing" 20 60 92
-    cp "$HOME/.local/include/picorder-config/picorder-config" > $HOME/.local/bin/picorder-config &> $HOME/log | whiptail --gauge "$txtPleaseWait installing picorder-config system launcher" 20 60 95
-    chmod 755 $HOME/.local/include/picorder-config/picorder-config &> log | whiptail --gauge "$txtPleaseWaitwhile installing" 20 60 100
-  fi
+if [ -f "$HOME/.profile" ]; then
+  cd "$HOME" && cp .profile .profile_bkup | whiptail --gauge "$txtPleaseWait  Exporting picorderOS PATH .local/bin" 10 60 8
+  grep -q "HOME/.local/bin"  ~/.profile; [ $? -eq 0 ] && echo "PATH EXIST" >> "$HOME"/log || echo 'PATH="$HOME/.local/bin/:$PATH"' >> ~/.profile  | echo "PATH SET" >> "$HOME"/log
 fi
+}
+
+setup_system() {
+
+  if (whiptail --fb --title "$message" --yesno "$txtRequierments" 20 60 --no-button "$txtExit" --yes-button "$txtContinueY"); then
+    sudo apt update &>> "$HOME"/log | whiptail --gauge "Please wait Updating repository" 10 60 15 #todo:Gauge %
+    sudo apt install -y git python3-pip python3-smbus &>> "$HOME"/log | whiptail --gauge "$txtPleaseWait  installing system Requierments" 10 60 20
+    sudo apt install -y libatlas-base-dev libopenjp2-7-dev libsdl2-dev libtiff5 libsdl-ttf2.0-dev &>> "$HOME"/log | whiptail --gauge "$txtPlease  installing SDL Base" 10 60 35
+    sudo apt install -y libsdl-gfx1.2-5 libsdl-image1.2 libsdl-kitchensink1 libsdl-mixer1.2 libsdl-sound1.2 &>> "$HOME"/log | whiptail --gauge "$txtPleaseWait  installing SDL GFX " 10 60 50
+    sudo apt install -y libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0 &>> "$HOME"/log | whiptail --gauge "$txtPleaseWaitwhile installing SDL GFX continue " 10 60 75
+    echo "Enableing i2c spi" &>> log | whiptail --gauge "$txtPleaseWaitwhile Enableing i2c and spi" 10 60 76
+    sudo sed -i -e 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt && sudo sed -i -e 's/#dtparam=spi=on/dtparam=spi=on/g' /boot/config.txt
+  
+    if (ls "$HOME"/.local/include);then
+      cd "$HOME"/.local/include/ && git clone https://github.com/Tearran/picorder-config.git &>> "$HOME"/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorder-config" 10 60 80
+      cd "$HOME"/.local/include/ && git clone https://github.com/tearran/picorderOS.git &>> "$HOME"/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS" 10 60 85
+      cd "$HOME"/.local/include/picorderOS/ && python3 -m pip install -r requirements.txt &>> "$HOME"/log | whiptail --gauge "$txtPleaseWaitwhile installing python requirements" 10 60 90
+    else
+      cd "$HOME"/.local/include/ && git clone https://github.com/Tearran/picorder-config.git &>> "$HOME"/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorder-config" 10 60 80
+      cd "$HOME"/.local/include/ && git clone https://github.com/tearran/picorderOS.git &>> "$HOME"/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS" 10 60 85
+      cd "$HOME"/.local/include/picorderOS/ && python3 -m pip install -r requirements.txt &>> "$HOME"/log | whiptail --gauge "$txtPleaseWaitwhile installing python requirements" 10 60 90
+    fi
+    if [ -d "$HOME/.local/" ];then
+      mv log "$HOME"/.local/include/picorder-config/log
+      echo "python3 $HOME/.local/include/picorderOS/main.py" > "$HOME"/.local/bin/piCorderOS &>> "$HOME"/log | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS system launcher" 10 60 91
+      chmod 755 "$HOME"/.local/bin/piCorderOS &>> log | whiptail --gauge "$txtPleaseWaitwhile installing" 10 60 92
+      cp "$HOME/.local/include/picorder-config/picorder-config" "$HOME/.local/bin/picorder-config" &>> "$HOME"/log | whiptail --gauge "$txtPleaseWait installing picorder-config system launcher" 10 60 95
+      chmod +x "$HOME"/.local/bin/picorder-config | tee -a log | whiptail --gauge "$txtPleaseWaitwhile installing" 10 60 100
+    fi
+  fi
 
 }
-setup108()
 
-Clear
-exit
+setup_environment
+setup_system 
+picorder-config
+
