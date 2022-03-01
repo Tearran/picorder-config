@@ -20,17 +20,13 @@ fi
 
 # Language strings
 message="  Welcome to picorderOS  "
-title=" piCorder installer "
 verInfo="thisver " #TODO
-txtHelloWorld=" Hello World: "
-txtWelcome="Welcome to piCorder-config: "
+
 txtExit="Exit "
-txtJobsDone="piCorderOS Installed. To launch type piCorderOS  "
 txtContinueY="Continue"
 txtContinueN="Back"
-txtPlzWait="Please Wait.."
+txtPleaseWait="Please Wait.."
 txtRequierments=" This tool will install the picorderOS system, picorder-config. Use a new install or risk loosing data" #TODO About subpage
-txtabout=" This tool aims to install the picorderOS and easly initial configuration. $verInfo "
 
 setup_environment() {
   [ ! -d "$HOME/.local" ] && mkdir "$HOME/.local/" | tee -a "$HOME/log" | whiptail --gauge "$txtPleaseWait  Setting piCorderos PATH" 10 60 10
@@ -52,20 +48,18 @@ setup_system() {
   sudo apt install -y libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0 &>> "$HOME/log" | whiptail --gauge "$txtPleaseWaitwhile installing SDL GFX continue " 10 60 75
   echo "Enableing i2c spi" &>> "$HOME/log" | whiptail --gauge "$txtPleaseWaitwhile Enableing i2c and spi" 10 60 76
   sudo sed -i -e 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt && sudo sed -i -e 's/#dtparam=spi=on/dtparam=spi=on/g' /boot/config.txt
-  if (ls "$HOME/.local/include");then
-    cd "$HOME/.local/include/" && git clone https://github.com/Tearran/picorder-config.git &>> "$HOME/log" | whiptail --gauge "$txtPleaseWaitwhile installing picorder-config" 10 60 80
-    cd "$HOME/.local/include/" && git clone https://github.com/tearran/picorderOS.git &>> "$HOME/log" | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS" 10 60 85
-    cd "$HOME/.local/include/picorderOS/" && python3 -m pip install -r requirements.txt &>> "$HOME/log" | whiptail --gauge "$txtPleaseWaitwhile installing python requirements" 10 60 90
-    cd "$HOME/.local/bin/" && wget https://raw.githubusercontent.com/Tearran/picorder-config/master/piCorderOS &>> "$HOME/log" | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS system launcher" 10 60 91
-    chmod 755 "$HOME/.local/bin/piCorderOS" | tee -a "$HOME/log" | whiptail --gauge "$txtPleaseWaitwhile installing" 10 60 92
-    chmod +x "$HOME/.local/bin/piCorderOS" | tee -a "$HOME/log" | whiptail --gauge "$txtPleaseWaitwhile installing" 10 60 92
-    cp "$HOME/.local/include/picorder-config/picorder-config" "$HOME/.local/bin/picorder-config" &>> "$HOME/log" | whiptail --gauge "$txtPleaseWait installing picorder-config system launcher" 10 60 95
-    chmod 755 "$HOME/.local/bin/picorder-config" | tee -a "$HOME/log" | whiptail --gauge "$txtPleaseWait installing" 10 60 100
-    chmod +x "$HOME/.local/bin/picorder-config" | tee -a "$HOME/log" | whiptail --gauge "$txtPleaseWait installing" 10 60 100
-  fi
+  cd "$HOME/.local/include/" && git clone https://github.com/Tearran/picorder-config.git &>> "$HOME/log" | whiptail --gauge "$txtPleaseWaitwhile installing picorder-config" 10 60 80
+  cd "$HOME/.local/include/" && git clone https://github.com/tearran/picorderOS.git &>> "$HOME/log" | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS" 10 60 85
+  cd "$HOME/.local/include/picorderOS/" && python3 -m pip install -r requirements.txt &>> "$HOME/log" | whiptail --gauge "$txtPleaseWaitwhile installing python requirements" 10 60 90
+  cd "$HOME/.local/bin/" && wget https://raw.githubusercontent.com/Tearran/picorder-config/master/piCorderOS &>> "$HOME/log" | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS system launcher" 10 60 91
+  chmod 755 "$HOME/.local/bin/piCorderOS" | tee -a "$HOME/log" | whiptail --gauge "$txtPleaseWaitwhile installing" 10 60 92
+  chmod +x "$HOME/.local/bin/piCorderOS" | tee -a "$HOME/log" | whiptail --gauge "$txtPleaseWaitwhile installing" 10 60 92
+  cp "$HOME/.local/include/picorder-config/picorder-config" "$HOME/.local/bin/picorder-config" &>> "$HOME/log" | whiptail --gauge "$txtPleaseWait installing picorder-config system launcher" 10 60 95
+  chmod 755 "$HOME/.local/bin/picorder-config" | tee -a "$HOME/log" | whiptail --gauge "$txtPleaseWait installing" 10 60 100
+  chmod +x "$HOME/.local/bin/picorder-config" | tee -a "$HOME/log" | whiptail --gauge "$txtPleaseWait installing" 10 60 100
 }
 
-if (whiptail --fb --title "$message" --yesno "$txtRequierments" 20 60 --no-button "$txtExit" --yes-button "$txtContinueY"); then
+if (whiptail --fb --title "$message" --yesno "$txtRequierments" 20 60 --no-button "$txtContinueN" --yes-button "$txtContinueY"); then
   setup_environment
   setup_system
   mv "$HOME/log" "$HOME/.local/include/picorder-config/log"
