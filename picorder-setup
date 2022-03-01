@@ -55,7 +55,7 @@ setup_system() {
     sudo apt install -y libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0 &>> "$HOME"/log | whiptail --gauge "$txtPleaseWaitwhile installing SDL GFX continue " 10 60 75
     echo "Enableing i2c spi" &>> log | whiptail --gauge "$txtPleaseWaitwhile Enableing i2c and spi" 10 60 76
     sudo sed -i -e 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt && sudo sed -i -e 's/#dtparam=spi=on/dtparam=spi=on/g' /boot/config.txt
-  
+
     if (ls $HOME/.local/include);then
       cd $HOME/.local/include/ && git clone https://github.com/Tearran/picorder-config.git &>> "$HOME"/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorder-config" 10 60 80
       cd $HOME/.local/include/ && git clone https://github.com/tearran/picorderOS.git &>> "$HOME"/log  | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS" 10 60 85
@@ -67,9 +67,9 @@ setup_system() {
     fi
     if [ -d "$HOME/.local/" ];then
       mv log $HOME/.local/include/picorder-config/log
-      echo "python3 $HOME/.local/include/picorderOS/main.py" > $HOME/.local/bin/piCorderOS &>> $HOME/log | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS system launcher" 10 60 91
+      wget https://raw.githubusercontent.com/Tearran/picorder-config/master/piCorderOS &>> $HOME/log | whiptail --gauge "$txtPleaseWaitwhile installing picorderOS system launcher" 10 60 91
       chmod 755 "$HOME"/.local/bin/piCorderOS &>> log | whiptail --gauge "$txtPleaseWaitwhile installing" 10 60 92
-      cp "$HOME/.local/include/picorder-config/picorder-config" $HOME/.local/bin/picorder-config" &>> $HOME/log | whiptail --gauge "$txtPleaseWait installing picorder-config system launcher" 10 60 95
+      cp "$HOME/.local/include/picorder-config/picorder-config" "$HOME/.local/bin/picorder-config" &>> $HOME/log | whiptail --gauge "$txtPleaseWait installing picorder-config system launcher" 10 60 95
       chmod +x $HOME/.local/bin/picorder-config | tee -a log | whiptail --gauge "$txtPleaseWaitw installing" 10 60 100
       chmod 755 $HOME/.local/bin/picorder-config | tee -a log | whiptail --gauge "$txtPleaseWait installing" 10 60 100
     fi
@@ -78,6 +78,5 @@ setup_system() {
 }
 
 setup_environment
-setup_system 
+setup_system
 picorder-config
-
