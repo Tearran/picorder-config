@@ -79,6 +79,14 @@ discription="Setting up picorder-config"
   cp "$HOME/.local/include/picorder-config/picorder-config" "$HOME/.local/bin/picorder-config"
   chmod 755 "$HOME/.local/bin/picorder-config"
   chmod +x "$HOME/.local/bin/picorder-config"
+  cp "$HOME/.local/include/picorder-config/picorderOS" "$HOME/.local/bin/picorderOS"
+  chmod 755 "$HOME/.local/bin/picorderOS"
+  chmod +x "$HOME/.local/bin/picorderOS"
+}
+
+setup_systemd(){
+cd $HOME/.local/bin/
+#todo picorderOS.system
 }
 
 message=$(echo "Name of the script: $0")
@@ -90,6 +98,7 @@ echo $0 | whiptail --title "Setup" --infobox "Please Wait..... " 8 78
 [ -f $HOME/.local/include/picorderOS/ ] && setup_git &>> log && whiptail --title "$title" --infobox "$discription" 8 78
 [ -f $HOME/.local/bin/picorder-config ] && setup_bin &>> log && whiptail --title "$title" --infobox "$discription" 8 78
 [ -f $HOME/log ] &&  mv "$HOME/log" "$HOME/.local/include/picorder-config/log" && whiptail --title "$title" --infobox "$discription" 8 78
+setup_systemd
 echo " "
 TERM=xterm
 exit
