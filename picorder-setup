@@ -1,8 +1,9 @@
 #!/bin/bash
+clear
 
 TERM=ansi 
-
-clear
+i2c_enl=$(sudo raspi-config nonint do_i2c 1)
+i2c_dis=$(sudo raspi-config nonint do_i2c 0)
 
 {
 theme="dark:0" # Theme setting dark comment to enable system colors
@@ -22,85 +23,25 @@ if [ $theme = "dark:0" ]; then
     '
 fi
 }
-
-# Language strings
-message="  Welcome to picorderOS  "
-window_size=$(stty size)
-#verInfo="thisver " #TODO
-txtContinueN="Exit"
-txtContinueY="Continue"
-txtPleaseWait="Please Wait.."
-txtRequierments=" This tool will install the picorderOS system, picorder-config. Use a new install or risk loosing data" #TODO About subpage
-
-setup_env() {
-title=" ini "
-discription="Setting up env"
-  [ ! -d "$HOME/.local" ] && mkdir "$HOME/.local/"
-  [ ! -d "$HOME/.local/bin/" ] && mkdir "$HOME/.local/bin/"
-  [ ! -d "$HOME/.local/lib/" ] && mkdir "$HOME/.local/lib/"
-  [ ! -d "$HOME/.local/include/" ] && mkdir "$HOME/.local/include/"
-  if [ -f "$HOME/.profile" ]; then
-    cd "$HOME" && cp .profile .profile_backup | whiptail --title "$title" --infobox "$discription" 8 78
-    #echo 'PATH="$HOME/.local/bin/:$PATH"' >> ~/.profile
-  fi
-}
-
-setup_apt() {
-title=" apt "
-discription="Installing deb Packages"
-  sudo apt update | whiptail --title "$title" --infobox "$discription" 8 78
-  sudo apt install -y git python3-pip python3-smbus  libatlas-base-dev libopenjp2-7-dev libsdl2-dev libtiff5 libsdl-ttf2.0-dev \
-                    libsdl-gfx1.2-5 libsdl-image1.2 libsdl-kitchensink1 libsdl-mixer1.2 libsdl-sound1.2 \
-                    libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0 | whiptail --title "$title" --infobox "$discription" 8 78
-}
-
-setup_i2c() {
-title=" i2c "
-discription="Enableing/Disabling i2c" 
-  #sudo sed -i -e 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt && sudo sed -i -e 's/#dtparam=spi=on/dtparam=spi=on/g' /boot/config.txt
-  i2c_enl=$(sudo raspi-config nonint do_i2c 1 | whiptail --title "$title" --infobox "$discription" 8 78 )  
-  i2c_dis=$(sudo raspi-config nonint do_i2c 0 | whiptail --title "$title" --infobox "$discription" 8 78 ) 
-}
-
-setup_git() {
-title=" picorderOS "
-discription="Installing, configuring picorderOS"
-  cd "$HOME/.local/include/" && git clone https://github.com/Tearran/picorder-config.git
-  cd "$HOME/.local/include/" && git clone https://github.com/tearran/picorderOS.git
-  cd "$HOME/.local/include/picorderOS/" && python3 -m pip install -r requirements.txt
-  cd "$HOME/.local/bin/" && wget https://raw.githubusercontent.com/Tearran/picorder-config/master/piCorderOS
-  chmod 755 "$HOME/.local/bin/piCorderOS"
-  chmod +x "$HOME/.local/bin/piCorderOS"
-  }
-
-setup_bin() {
-title=" picorder-config "
-discription="Setting up picorder-config"
-  cp "$HOME/.local/include/picorder-config/picorder-config" "$HOME/.local/bin/picorder-config"
-  chmod 755 "$HOME/.local/bin/picorder-config"
-  chmod +x "$HOME/.local/bin/picorder-config"
-  cp "$HOME/.local/include/picorder-config/picorderOS" "$HOME/.local/bin/picorderOS"
-  chmod 755 "$HOME/.local/bin/picorderOS"
-  chmod +x "$HOME/.local/bin/picorderOS"
-}
-
-setup_systemd(){
-cd $HOME/.local/bin/
-#todo picorderOS.system
-}
-
-message=$(echo "Name of the script: $0")
-if (whiptail --fb --title "$message" --yesno "$txtRequierments" --no-button "$txtContinueN" --yes-button "$txtContinueY" $(stty size) ); then
-echo $0 | whiptail --title "Setup" --infobox "Please Wait..... " 8 78
-  setup_env &>> log && whiptail --title "$title" --infobox "$discription" 8 78
-  setup_apt &>> log && whiptail --title "$title" --infobox "$discription" 8 78
-  i2c_enl &>> log && whiptail --title "$title" --infobox "$discription" 8 78
-[ -f $HOME/.local/include/picorderOS/ ] && setup_git &>> log && whiptail --title "$title" --infobox "$discription" 8 78
-[ -f $HOME/.local/bin/picorder-config ] && setup_bin &>> log && whiptail --title "$title" --infobox "$discription" 8 78
-[ -f $HOME/log ] &&  mv "$HOME/log" "$HOME/.local/include/picorder-config/log" && whiptail --title "$title" --infobox "$discription" 8 78
-setup_systemd
-echo " "
+mkdir "$HOME/.local/"
+mkdir "$HOME/.local/bin/"
+mkdir "$HOME/.local/lib/"
+mkdir "$HOME/.local/include/"
+sudo apt update
+sudo apt install -y git python3-pip python3-smbus 
+sudo apt install -y libatlas-base-dev libopenjp2-7-dev libsdl2-dev libtiff5 libsdl-ttf2.0-dev  libsdl-gfx1.2-5 libsdl-image1.2 libsdl-kitchensink1 libsdl-mixer1.2 libsdl-sound1.2 libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0 
+cd "$HOME/.local/include/" && git clone https://github.com/Tearran/picorder-config.git
+cd "$HOME/.local/include/" && git clone https://github.com/tearran/picorderOS.git
+cd "$HOME/.local/include/picorderOS/" && python3 -m pip install -r requirements.txt
+cd "$HOME/.local/bin/" && wget https://raw.githubusercontent.com/Tearran/picorder-config/master/piCorderOS
+chmod 755 "$HOME/.local/bin/piCorderOS"
+chmod +x "$HOME/.local/bin/piCorderOS"
+cp "$HOME/.local/include/picorder-config/picorder-config" "$HOME/.local/bin/picorder-config"
+chmod 755 "$HOME/.local/bin/picorder-config"
+chmod +x "$HOME/.local/bin/picorder-config"
+cp "$HOME/.local/include/picorder-config/picorderOS" "$HOME/.local/bin/picorderOS"
+chmod 755 "$HOME/.local/bin/picorderOS"
+chmod +x "$HOME/.local/bin/picorderOS"
+echo "System install complete...... "
 TERM=xterm
 exit
-#$(picorder-config)
-fi
