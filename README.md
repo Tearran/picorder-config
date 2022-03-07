@@ -9,7 +9,9 @@ curl https://raw.githubusercontent.com/Tearran/picorder-config/master/picorder-s
 ``` 
 wget
 ```sh 
-wget https://raw.githubusercontent.com/Tearran/picorder-config/master/picorder-setup && picorder-config 
+wget https://raw.githubusercontent.com/Tearran/picorder-config/master/picorder-setup
+chmod +x picorder-setup
+sh ./picorder-setup
 ```
 # Features
 
