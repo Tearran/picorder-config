@@ -45,15 +45,25 @@ cd "$HOME/.local/include/picorder-config/" && chmod 755 "$HOME/.local/include/pi
 # clone fbcp repository
 cd "$HOME/.local/include/" && git clone https://github.com/Tearran/fbcp-ili9341.git
 cd "$HOME/.local/include/fbcp-ili9341" && mkdir build
-cd "$HOME/.local/include/fbcp-ili9341/build" && cmake -Wno-dev -DPIRATE_AUDIO_ST7789_HAT=ON -DSPI_BUS_CLOCK_DIVISOR=6 -DBACKLIGHT_CONTROL=ON -DSTATISTICS=1 -DUSE_DMA_TRANSFERS=OFF ..
-cd "$HOME/.local/include/fbcp-ili9341/build" && make -j
-sudo cp "$HOME/.local/include/fbcp-ili9341/build/fbcp-ili9341" "/usr/bin/fbcp"
 
+# ST7735S 1.8" 128x160 
+#cd "$HOME/.local/include/fbcp-ili9341/build" && cmake -Wno-dev  -DST7735S=ON -DGPIO_TFT_BACKLIGHT=18 -DGPIO_TFT_RESET_PIN=27 -DGPIO_TFT_DATA_CONTROL=25 -DSPI_BUS_CLOCK_DIVISOR=30 -DDISPLAY_SWAP_BGR=ON -DSINGLE_CORE_BOARD=ON -DSTATISTICS=0 ..
+
+# ST7789 Pimaroni Pitate audio
+#cd "$HOME/.local/include/fbcp-ili9341/build" && cmake -Wno-dev -DPIRATE_AUDIO_ST7789_HAT=ON -DSPI_BUS_CLOCK_DIVISOR=6 -DBACKLIGHT_CONTROL=ON -DSTATISTICS=1 -DUSE_DMA_TRANSFERS=OFF ..
+
+# Compile binary
+#cd "$HOME/.local/include/fbcp-ili9341/build" && make -j
+# copy binary to /usr/bin
+#sudo cp "$HOME/.local/include/fbcp-ili9341/build/fbcp-ili9341" "/usr/bin/fbcp"
 
 # Install launchers 
-sudo cp "$HOME/.local/include/fbcp-ili9341/build/fbcp-ili9341" "/usr/bin/fbcp"
+
+# picorderOS Launcher for serveces
 sudo cp "$HOME/.local/include/picorder-config/picorderOS" "/usr/bin/"
+# picorder-config script
 sudo cp "$HOME/.local/include/picorder-config/picorder-config" "/usr/bin/"
+# Default picorderOS config file
 cp "$HOME/.local/include/picorder-config/picorder.ini" "/home/alpha/.local/include/picorderOS/picorder.ini"
 
 [ -f /usr/bin/picorderOS ] && echo " " && echo "picorderOS launcher installed /usr/bin" ;
