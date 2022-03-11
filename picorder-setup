@@ -64,11 +64,11 @@ make -j
 # Install launchers 
 
 # picorderOS Launcher for serveces
-sudo cp "$HOME/.local/include/picorder-config/picorderOS" "/usr/bin/"
+#sudo cp "$HOME/.local/include/picorder-config/picorderOS" "/usr/bin/"
 # picorder-config script
 #sudo cp "$HOME/.local/include/picorder-config/picorder-config" "/usr/bin/"
 # Default picorderOS config file
-cp "$HOME/.local/include/picorder-config/picorder.ini" "/home/alpha/.local/include/picorderOS/picorder.ini"
+#cp "$HOME/.local/include/picorder-config/picorder.ini" "/home/alpha/.local/include/picorderOS/picorder.ini"
 
 [ -f /usr/bin/picorderOS ] && echo " " && echo "picorderOS launcher installed /usr/bin" ;
 [ -f /usr/bin/picorderOS ] && echo " " && echo "picorder-config installed /usr/bin" && echo " " ;
@@ -77,7 +77,7 @@ echo " " && echo "System install complete...... " | echo " "
 
 TERM=xterm
 
-cd "$HOME/.local/include/fbcp-ili9341 && sudo ./fbcp-ili9341
- export DISPLAY=:0 && /usr/bin/picorderOS
+sudo "/home/alpha/.local/include/fbcp-ili9341/build/fbcp-ili9341" &
+export DISPLAY=:0
 
 exit
