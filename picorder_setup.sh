@@ -91,8 +91,12 @@ if [ -d "$HOME/.local/include/fbcp-ili9341" ] ; then
   echo "###############################"
     echo "Display Drivers Compiled: "
     echo "          For the ST7735R "
+    echo "...................."
+    echo "sudo fbcp &"
+    echo "...................."
     echo " Drivers are located "
-    echo  "$HOME/.local/include/fbcp-ili9341/build/fbcp-ili9341"
+    echo "$HOME/.local/include/fbcp-ili9341/build/fbcp-ili9341"
+    echo "TODO add display configuration to /boot/config.txt"
     echo "###############################"
     sudo sed -i -e 's/exit 0/fbcp& exit 0/g' /etc/rc.local || echo "error sed01"
 
