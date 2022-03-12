@@ -2,6 +2,28 @@
 clear
 
 
+TERM=ansi
+i2c_enl=$(sudo raspi-config nonint do_i2c 1)
+i2c_dis=$(sudo raspi-config nonint do_i2c 0)
+
+{
+theme="dark:0" # Theme setting dark comment to enable system colors
+
+if [ $theme = "dark:0" ]; then
+  export NEWT_COLORS='
+    root=white,black
+    window=white,black
+    textbox=white,black
+    title=white,black
+    listbox=white,black
+    sellistbox=black,yellow
+    actsellistbox=black,yellow
+    border=blue,black
+    actbutton=black,green
+    button=white,black
+    '
+fi
+}
 
 apt_picorder() {
     # Update Debian repository
