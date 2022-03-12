@@ -1,5 +1,0 @@
-alias lsize='ls --human-readable --size -1'
-alias nowdate='date +"%m-%d-%Y"'
-alias top10CPU='ps auxf | sort -nr -k 3 | head -10'
-alias top10mem='ps auxf | sort -nr -k 4 | head -10'
-alias piCorder='echo "piCorderOS"'

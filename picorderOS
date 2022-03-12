@@ -1,4 +1,0 @@
-#!/bin/bash
-#py3 launcher for picorder-configure
-
-cd $HOME/.local/include/picorderOS/ && python3 main.py
