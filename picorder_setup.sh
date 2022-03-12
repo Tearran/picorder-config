@@ -6,7 +6,7 @@ clear
 apt_picorder() {
     # Update Debian repository
     sudo apt update
-    [ -f "/usr/bin/git" ] || sudo apt install -y git cmake ;
+    sudo apt install -y git cmake ;
     # Instal dev tools
 
     # Install Python Pip
