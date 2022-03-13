@@ -6,7 +6,6 @@ picorder-config is a set shell commands that aim to install, configure and, add 
 Curl 
 ```bash 
 curl https://raw.githubusercontent.com/Tearran/picorder-config/master/picorder_setup.sh | bash
- 
 ``` 
 wget
 ```sh 
