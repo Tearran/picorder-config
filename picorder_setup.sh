@@ -62,7 +62,8 @@ sudo apt install -y python3-pip python3-smbus sense-hat
 echo "........................................."
 echo " picorderOS source Downloaded"
 echo "........................................."
-[ ! -d "$HOME/.local/include/fbcp-ili9341" ] && cd "$HOME/.local/include/" && git clone https://github.com/Tearran/fbcp-ili9341.git
+[ ! -d "$HOME/.local/include/fbcp-ili9341" ] && cd "$HOME/.local/include/" && git clone https://github.com/juj/fbcp-ili9341
+#[ ! -d "$HOME/.local/include/fbcp-ili9341" ] && cd "$HOME/.local/include/" && git clone https://github.com/Tearran/fbcp-ili9341.git
 [ -d "$HOME/.local/include/fbcp-ili9341/build" ] || cd "$HOME/.local/include/fbcp-ili9341" && mkdir build
 echo "........................................."
 echo " Framebuffer Copy source Downloaded"
@@ -76,7 +77,10 @@ sudo apt install -y cmake
 sudo cp "$HOME/.local/include/picorder-config/include/fbcpd.service" /etc/systemd/system/fbcpd.service ; 
 sudo systemctl enable fbcpd ;
 sudo systemctl start fbcpd ; tput cup 0 100  |  whiptail --infobox "Display server set...." 20 66;
-sudo cp "$HOME/.local/include/picorder-config/include/picorderosd.service" /etc/systemd/system/picorderosd.service
-sudo systemctl enable picorderosd ;
-sudo systemctl start fbcpd ; tput cup 0 100  |  whiptail --infobox "picorderd enabled TODO Requierments may error...." 20 66;
-#sudo apt install -y libmediainfo-dev libatlas-base-dev libopenjp2-7-dev libsdl2-dev libtiff5 libsdl-ttf2.0-dev  libsdl-gfx1.2-5 libsdl-image1.2 libsdl-kitchensink1 libsdl-mixer1.2 libsdl-sound1.2 libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0
+#if whiptail --yesno "Display showing CLI?" 10 100 --defaultno; then   echo "Yes I am sure!"; else   echo "No I am not sure!"; fi
+
+#sudo cp "$HOME/.local/include/picorder-config/include/picorderosd.service" /etc/systemd/system/picorderosd.service
+#sudo systemctl enable picorderosd ;
+#sudo systemctl start fbcpd ; tput cup 0 100  |  whiptail --infobox "picorderd enabled TODO Requierments may error...." 20 66;
+sudo apt install -y libmediainfo-dev libatlas-base-dev libopenjp2-7-dev libsdl2-dev libtiff5 libsdl-ttf2.0-dev  libsdl-gfx1.2-5 libsdl-image1.2 libsdl-kitchensink1 libsdl-mixer1.2 libsdl-sound1.2 libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0
+if whiptail --yesno "Instaltion complete! Reboot?" 10 100 --defaultno; then   echo "Yes! Rebooting"; sudo reboot; else   echo "No !"; exit 0; fi
