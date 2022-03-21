@@ -1,0 +1,11 @@
+[Unit]
+Description=Starts Frambuffer copy
+DefaultDependencies=false          
+                                  
+[Service]
+Type=simple
+ExecStart=fbcp
+WorkingDirectory=/usr/bin/
+
+[Install]
+WantedBy=local-fs.target
