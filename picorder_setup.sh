@@ -27,7 +27,7 @@ fi
 #hdmi_mode=87
 #hdmi_cvt=160 128 60 1 0 0 0
 #hdmi_force_hotplug=1
-page_count=0
+
 tput cup 0 100  |  whiptail --infobox "Setting things up...." 20 66;
 rm -f /home/alpha/.bash_logout # For development; Save the bash history for referance.
 whiptail --infobox "Setting Boot to CLI...." 10 100
@@ -37,30 +37,35 @@ sudo raspi-config nonint do_i2c 1 #enable i2c
 #sudo sed -i -e 's/rootwait/logo.nologo rootwait/g'   /boot/config.txt || echo "error config"
 # uncomment to Unclutter home removing unused folders 
 # rm -r Bookshelf/ Desktop/ Documents/ Music/ Pictures/ Public/ Templates/ Videos/ Downloads/
+
 tput cup 0 100  |  whiptail --infobox "Update system repository...." 20 66;
 sudo apt update
 tput cup 0 100  |  whiptail --infobox "Download source code...." 20 66;
 sudo apt install -y git 
+
 echo "........................................."
-echo " apt requierments complete"
+echo " apt requierments complete" |  whiptail --infobox "Base apt requierments met...." 20 66;
 echo "........................................."
+
 [ -d "$HOME/.local/" ] ||  mkdir "$HOME/.local/"
 [ -d "$HOME/.local/bin/" ] ||  mkdir "$HOME/.local/bin/"
 [ -d "$HOME/.local/lib/" ] || mkdir "$HOME/.local/lib/"
 [ -d "$HOME/.local/include/" ] ||  mkdir "$HOME/.local/include/"
 echo "........................................."
-echo " system envoroment complete"
+echo " system envoroment complete"  |  whiptail --infobox "Base apt requierments met...." 20 66;
 echo "........................................."
 [ ! -d "$HOME/.local/include/picorder-config" ] && cd "$HOME/.local/include/" && git clone https://github.com/Tearran/picorder-config.git
 sudo cp /usr/share/plymouth/themes/pix/splash.png /usr/share/plymouth/themes/pix/splash.png.back
 sudo cp "$HOME/.local/include/picorder-config/include/splash.png" /usr/share/plymouth/themes/pix/splash.png
+sudo cp "$HOME/.local/include/picorder-config/include/config.txt" /boot/config.txt || echo "error Display /boot/config.txt" 
+cp "/home/alpha/.local/include/picorder-config/include/picorder.ini" "/home/alpha/.local/include/picorderOS/"
 echo "........................................."
-echo " picorder-config source Downloaded"
+echo " picorder-config source Downloaded"  |  whiptail --infobox "picorder-config source Downloaded...." 20 66;
 echo "........................................."
 [ ! -d "$HOME/.local/include/picorderOS" ] && cd "$HOME"/.local/include/ && git clone https://github.com/directive0/picorderOS.git
 sudo apt install -y python3-pip python3-smbus sense-hat
 echo "........................................."
-echo " picorderOS source Downloaded"
+echo " picorderOS source Downloaded" 
 echo "........................................."
 [ ! -d "$HOME/.local/include/fbcp-ili9341" ] && cd "$HOME/.local/include/" && git clone https://github.com/juj/fbcp-ili9341
 #[ ! -d "$HOME/.local/include/fbcp-ili9341" ] && cd "$HOME/.local/include/" && git clone https://github.com/Tearran/fbcp-ili9341.git
@@ -76,11 +81,33 @@ sudo apt install -y cmake
 [ ! -f "/usr/bin/fbcp"  ] &&  sudo cp "/home/alpha/.local/include/fbcp-ili9341/build/fbcp-ili9341" "/usr/bin/fbcp"
 sudo cp "$HOME/.local/include/picorder-config/include/fbcpd.service" /etc/systemd/system/fbcpd.service ; 
 sudo systemctl enable fbcpd ;
+sudo systemctl stop fbcpd ; tput cup 0 100
 sudo systemctl start fbcpd ; tput cup 0 100  |  whiptail --infobox "Display server set...." 20 66;
-#if whiptail --yesno "Display showing CLI?" 10 100 --defaultno; then   echo "Yes I am sure!"; else   echo "No I am not sure!"; fi
 
-#sudo cp "$HOME/.local/include/picorder-config/include/picorderosd.service" /etc/systemd/system/picorderosd.service
-#sudo systemctl enable picorderosd ;
-#sudo systemctl start fbcpd ; tput cup 0 100  |  whiptail --infobox "picorderd enabled TODO Requierments may error...." 20 66;
+{
+cd "$HOME/.local/include/picorder-config/" || echo "no folder named picorder-config"
+cat << 'OSEOF' > picorderosd.service
+[Unit]
+Description=Starts picorderOS
+After=multi-user.target
+Conflicts=getty@tty1.service
+          
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 main.py
+WorkingDirectory=/home/alpha/.local/include/picorderOS/
+StandardInput=tty-force
+
+[Install]
+WantedBy=multi-user.target
+OSEOF
+
+[ -f /etc/systemd/system/picorderosd.service ] && sudo systemctl disable picorderosd ;
+sudo mv "$HOME/.local/include/picorder-config/picorderosd.service" /etc/systemd/system/ 
+sudo systemctl enable picorderosd ;
+sudo systemctl start picorderosd ;
+}
+
 sudo apt install -y libmediainfo-dev libatlas-base-dev libopenjp2-7-dev libsdl2-dev libtiff5 libsdl-ttf2.0-dev  libsdl-gfx1.2-5 libsdl-image1.2 libsdl-kitchensink1 libsdl-mixer1.2 libsdl-sound1.2 libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0
-if whiptail --yesno "Instaltion complete! Reboot?" 10 100 --defaultno; then   echo "Yes! Rebooting"; sudo reboot; else   echo "No !"; exit 0; fi
+pip3 install -r requirements.txt
+if whiptail --yesno "Instaltion complete! Reboot?" 10 100 --defaultno; then echo "Yes! Rebooting"; sudo reboot; else echo "No !"; exit 0; fi
