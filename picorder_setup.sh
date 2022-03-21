@@ -63,6 +63,7 @@ echo "........................................."
 echo " picorder-config source Downloaded"  |  whiptail --infobox "picorder-config source Downloaded...." 20 66;
 echo "........................................."
 [ ! -d "$HOME/.local/include/picorderOS" ] && cd "$HOME"/.local/include/ && git clone https://github.com/directive0/picorderOS.git
+cp "/home/alpha/.local/include/picorder-config/picorder.ini" "/home/alpha/.local/include/picorderOS/picorder.ini"
 sudo apt install -y python3-pip python3-smbus sense-hat
 echo "........................................."
 echo " picorderOS source Downloaded" 
@@ -85,7 +86,7 @@ sudo systemctl stop fbcpd ; tput cup 0 100
 sudo systemctl start fbcpd ; tput cup 0 100  |  whiptail --infobox "Display server set...." 20 66;
 
 {
-cd "$HOME/.local/include/picorder-config/" || exit 2
+cd "$HOME/.local/include/picorder-config/" || exit
 cat << 'OSEOF' > picorderosd.service
 [Unit]
 Description=Starts picorderOS
