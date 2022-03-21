@@ -1,11 +1,6 @@
 #!/bin/bash
 clear
-
-
 TERM=ansi
-i2c_enl=$(sudo raspi-config nonint do_i2c 1)
-i2c_dis=$(sudo raspi-config nonint do_i2c 0)
-
 {
 theme="dark:0" # Theme setting dark comment to enable system colors
 
@@ -24,42 +19,6 @@ if [ $theme = "dark:0" ]; then
     '
 fi
 }
-
-apt_picorder() {
-    # Update Debian repository
-    sudo apt update
-    sudo apt install -y git cmake ;
-    # Instal dev tools
-
-    # Install Python Pip
-    #sudo apt install -y python3-pip python3-smbus sense-hat
-
-    # Install other
-    #sudo apt install -y libmediainfo-dev libatlas-base-dev libopenjp2-7-dev libsdl2-dev libtiff5 libsdl-ttf2.0-dev  libsdl-gfx1.2-5 libsdl-image1.2 libsdl-kitchensink1 libsdl-mixer1.2 libsdl-sound1.2 libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0
-    
-
-
-compile_st7735r(){
-if [ -d "$HOME/.local/include/fbcp-ili9341" ] ; then
-
-    #Compile Display drivers ST7735R
-    cd "$HOME/.local/include/fbcp-ili9341/build/" && cmake -Wno-dev -DST7735R=ON -DGPIO_TFT_BACKLIGHT=18 -DGPIO_TFT_RESET_PIN=24 -DGPIO_TFT_DATA_CONTROL=23 -DSPI_BUS_CLOCK_DIVISOR=8 -DDISPLAY_SWAP_BGR=ON -DDISPLAY_INVERT_COLORS=ON ..
-    cd "$HOME/.local/include/fbcp-ili9341/build/" && make -j
-    sudo cp "/home/alpha/.local/include/fbcp-ili9341/build/fbcp-ili9341" "/usr/bin/fbcp"
-    echo "###############################"
-    echo "Display Drivers Compiled: "
-    echo "          For the ST7735R "
-    echo "...................."
-    echo "sudo fbcp &"
-    echo "...................."
-    echo " Drivers are located "
-    echo "$HOME/.local/include/fbcp-ili9341/build/fbcp-ili9341"
-    echo "TODO add display configuration to /boot/config.txt"
-    echo "###############################"
-    sudo sed -i -e 's/exit 0/fbcp& exit 0/g' /etc/rc.local || echo "error sed01"
-
-
-
 #TODO
 # Configuring display size will affect both HDMI and TFT
 # Following append to /boot/config.txt
