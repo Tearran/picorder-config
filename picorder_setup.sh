@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 clear
 TERM=ansi
 {
@@ -27,14 +27,19 @@ fi
 #hdmi_mode=87
 #hdmi_cvt=160 128 60 1 0 0 0
 #hdmi_force_hotplug=1
-#!/usr/bin/bash
+page_count=0
+tput cup 0 100  |  whiptail --infobox "Setting things up...." 20 66;
 rm -f /home/alpha/.bash_logout # For development; Save the bash history for referance.
+whiptail --infobox "Setting Boot to CLI...." 10 100
+tput cup 0 100  |  whiptail --infobox "Setting Boot to cli...." 20 66;
 sudo raspi-config nonint do_boot_behaviour B2 # Change to cli auto login
 sudo raspi-config nonint do_i2c 1 #enable i2c
 #sudo sed -i -e 's/rootwait/logo.nologo rootwait/g'   /boot/config.txt || echo "error config"
 # uncomment to Unclutter home removing unused folders 
 # rm -r Bookshelf/ Desktop/ Documents/ Music/ Pictures/ Public/ Templates/ Videos/ Downloads/
+tput cup 0 100  |  whiptail --infobox "Update system repository...." 20 66;
 sudo apt update
+tput cup 0 100  |  whiptail --infobox "Download source code...." 20 66;
 sudo apt install -y git 
 echo "........................................."
 echo " apt requierments complete"
@@ -62,13 +67,14 @@ echo "........................................."
 echo "........................................."
 echo " Framebuffer Copy source Downloaded"
 echo "........................................."
-sudo apt install -y cmake
+tput cup 0 100  |  whiptail --infobox "Setting Display up...." 20 66;
+sudo apt install -y cmake 
 [ -d "$HOME/.local/include/fbcp-ili9341/build/" ] && cd "$HOME/.local/include/fbcp-ili9341/build/" || exit 1
 [ -d "$HOME/.local/include/fbcp-ili9341/build/" ] && cmake -Wno-dev -DST7735R=ON -DGPIO_TFT_BACKLIGHT=18 -DGPIO_TFT_RESET_PIN=24 -DGPIO_TFT_DATA_CONTROL=23 -DSPI_BUS_CLOCK_DIVISOR=8 -DSTATISTICS=0 -DDISPLAY_SWAP_BGR=ON -DDISPLAY_INVERT_COLORS=OFF ..
 [ -d "$HOME/.local/include/fbcp-ili9341/build/" ] && cd "$HOME/.local/include/fbcp-ili9341/build/" && make -j
 [ ! -f "/usr/bin/fbcp"  ] &&  sudo cp "/home/alpha/.local/include/fbcp-ili9341/build/fbcp-ili9341" "/usr/bin/fbcp"
 sudo cp "$HOME/.local/include/picorder-config/include/fbcpd.service" /etc/systemd/system/fbcpd.service ; 
 sudo systemctl enable fbcpd ;
-sudo systemctl start fbcpd ;
+sudo systemctl start fbcpd ; tput cup 0 100  |  whiptail --infobox "Display server set...." 20 66;
 
 #sudo apt install -y libmediainfo-dev libatlas-base-dev libopenjp2-7-dev libsdl2-dev libtiff5 libsdl-ttf2.0-dev  libsdl-gfx1.2-5 libsdl-image1.2 libsdl-kitchensink1 libsdl-mixer1.2 libsdl-sound1.2 libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0
