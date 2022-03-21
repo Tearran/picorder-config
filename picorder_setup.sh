@@ -57,7 +57,7 @@ echo "........................................."
 [ ! -d "$HOME/.local/include/picorder-config" ] && cd "$HOME/.local/include/" && git clone https://github.com/Tearran/picorder-config.git
 sudo cp /usr/share/plymouth/themes/pix/splash.png /usr/share/plymouth/themes/pix/splash.png.back
 sudo cp "$HOME/.local/include/picorder-config/include/splash.png" /usr/share/plymouth/themes/pix/splash.png
-sudo cp "$HOME/.local/include/picorder-config/include/config.txt" /boot/config.txt || echo "error Display /boot/config.txt" 
+sudo cp "$HOME/.local/include/picorder-config/include/config.txt" /boot/config.txt  || echo "error Display /boot/config.txt" 
 cp "/home/alpha/.local/include/picorder-config/include/picorder.ini" "/home/alpha/.local/include/picorderOS/"
 echo "........................................."
 echo " picorder-config source Downloaded"  |  whiptail --infobox "picorder-config source Downloaded...." 20 66;
@@ -85,7 +85,7 @@ sudo systemctl stop fbcpd ; tput cup 0 100
 sudo systemctl start fbcpd ; tput cup 0 100  |  whiptail --infobox "Display server set...." 20 66;
 
 {
-cd "$HOME/.local/include/picorder-config/" || echo "no folder named picorder-config"
+cd "$HOME/.local/include/picorder-config/" || exit 2
 cat << 'OSEOF' > picorderosd.service
 [Unit]
 Description=Starts picorderOS
@@ -109,5 +109,5 @@ sudo systemctl start picorderosd ;
 }
 
 sudo apt install -y libmediainfo-dev libatlas-base-dev libopenjp2-7-dev libsdl2-dev libtiff5 libsdl-ttf2.0-dev  libsdl-gfx1.2-5 libsdl-image1.2 libsdl-kitchensink1 libsdl-mixer1.2 libsdl-sound1.2 libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0
-pip3 install -r requirements.txt
+cd "$HOME"/.local/include/picorderOS && sudo /usr/bin/python3 -m pip install -r requirements.txt
 if whiptail --yesno "Instaltion complete! Reboot?" 10 100 --defaultno; then echo "Yes! Rebooting"; sudo reboot; else echo "No !"; exit 0; fi
