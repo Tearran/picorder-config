@@ -76,5 +76,7 @@ sudo apt install -y cmake
 sudo cp "$HOME/.local/include/picorder-config/include/fbcpd.service" /etc/systemd/system/fbcpd.service ; 
 sudo systemctl enable fbcpd ;
 sudo systemctl start fbcpd ; tput cup 0 100  |  whiptail --infobox "Display server set...." 20 66;
-
+sudo cp "$HOME/.local/include/picorder-config/include/picorderosd.service" /etc/systemd/system/picorderosd.service
+sudo systemctl enable picorderosd ;
+sudo systemctl start fbcpd ; tput cup 0 100  |  whiptail --infobox "picorderd enabled TODO Requierments may error...." 20 66;
 #sudo apt install -y libmediainfo-dev libatlas-base-dev libopenjp2-7-dev libsdl2-dev libtiff5 libsdl-ttf2.0-dev  libsdl-gfx1.2-5 libsdl-image1.2 libsdl-kitchensink1 libsdl-mixer1.2 libsdl-sound1.2 libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0
