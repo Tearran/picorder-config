@@ -1,0 +1,11 @@
+[Unit]
+Description=Starts picorderOS
+DefaultDependencies=false          
+                                  
+[Service]
+Type=simple
+ExecStart=picorderOS
+WorkingDirectory=/usr/bin/
+
+[Install]
+WantedBy=local-fs.target
