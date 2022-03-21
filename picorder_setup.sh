@@ -15,7 +15,7 @@ if [ $theme = "dark:0" ]; then
     actsellistbox=black,yellow
     border=blue,black
     actbutton=black,green
-    button=white,black
+    button=black,blue
     '
 fi
 }
