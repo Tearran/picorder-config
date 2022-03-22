@@ -35,7 +35,7 @@ sudo apt purge python3-cap1xxx python3-envirophat python3-pillow python3-pygame 
 sudo apt install -y git cmake
 
 echo "........................................."
-echo " apt requierments complete" |  whiptail --infobox "Base apt requierments met...." 20 66;
+echo " apt requierments complete" |  whiptail --infobox "removed confilctine apt packages...." 20 66;
 echo "........................................."
 
 [ -d "$HOME/.local/" ] ||  mkdir "$HOME/.local/"
@@ -104,10 +104,10 @@ OSEOF
 [ -f /etc/systemd/system/picorderosd.service ] && sudo systemctl disable picorderosd ;
 sudo mv "$HOME/.local/include/picorder-config/picorderosd.service" /etc/systemd/system/
 sudo systemctl enable picorderosd |  whiptail --infobox "Enable picorderosd service...." 20 66;
-sudo systemctl start picorderosd |  whiptail --infobox "Starting picorderosd service...." 20 66;
 }
 
 #sudo apt purge
 sudo apt install -y libmediainfo-dev libatlas-base-dev libopenjp2-7-dev libsdl2-dev libtiff5 libsdl-ttf2.0-dev  libsdl-gfx1.2-5 libsdl-image1.2 libsdl-kitchensink1 libsdl-mixer1.2 libsdl-sound1.2 libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0
 cd "$HOME"/.local/include/picorderOS && sudo /usr/bin/python3 -m pip install -r requirements.txt
+sudo systemctl start picorderosd |  whiptail --infobox "Starting picorderosd service...." 20 66;
 if whiptail --yesno "Instaltion complete! Reboot?" 10 100 --defaultno; then echo "Yes! Rebooting"; sudo reboot; else echo "No !"; exit 0; fi
