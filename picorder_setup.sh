@@ -29,7 +29,7 @@ fi
 #hdmi_force_hotplug=1
 
 tput cup 0 100  |  whiptail --infobox "Setting things up...." 20 66;
-rm -f /home/alpha/.bash_logout # For development; Save the bash history for referance.
+rm -f $HOME/.bash_logout # For development; Save the bash history for referance.
 whiptail --infobox "Setting Boot to CLI...." 10 100
 tput cup 0 100  |  whiptail --infobox "Setting Boot to cli...." 20 66;
 sudo raspi-config nonint do_boot_behaviour B2 # Change to cli auto login
@@ -58,12 +58,12 @@ echo "........................................."
 sudo cp /usr/share/plymouth/themes/pix/splash.png /usr/share/plymouth/themes/pix/splash.png.back
 sudo cp "$HOME/.local/include/picorder-config/include/splash.png" /usr/share/plymouth/themes/pix/splash.png
 sudo cp "$HOME/.local/include/picorder-config/include/config.txt" /boot/config.txt  || echo "error Display /boot/config.txt" 
-cp "/home/alpha/.local/include/picorder-config/include/picorder.ini" "/home/alpha/.local/include/picorderOS/"
+cp "$HOME/.local/include/picorder-config/include/picorder.ini" "$HOME/.local/include/picorderOS/"
 echo "........................................."
 echo " picorder-config source Downloaded"  |  whiptail --infobox "picorder-config source Downloaded...." 20 66;
 echo "........................................."
 [ ! -d "$HOME/.local/include/picorderOS" ] && cd "$HOME"/.local/include/ && git clone https://github.com/directive0/picorderOS.git
-cp "/home/alpha/.local/include/picorder-config/picorder.ini" "/home/alpha/.local/include/picorderOS/picorder.ini"
+cp "$HOME/.local/include/picorder-config/picorder.ini" "$HOME/.local/include/picorderOS/picorder.ini"
 sudo apt install -y python3-pip python3-smbus sense-hat
 echo "........................................."
 echo " picorderOS source Downloaded" 
@@ -79,7 +79,7 @@ sudo apt install -y cmake
 [ -d "$HOME/.local/include/fbcp-ili9341/build/" ] && cd "$HOME/.local/include/fbcp-ili9341/build/" || exit 1
 [ -d "$HOME/.local/include/fbcp-ili9341/build/" ] && cmake -Wno-dev -DST7735R=ON -DGPIO_TFT_BACKLIGHT=18 -DGPIO_TFT_RESET_PIN=24 -DGPIO_TFT_DATA_CONTROL=23 -DSPI_BUS_CLOCK_DIVISOR=8 -DSTATISTICS=0 -DDISPLAY_SWAP_BGR=ON -DDISPLAY_INVERT_COLORS=OFF ..
 [ -d "$HOME/.local/include/fbcp-ili9341/build/" ] && cd "$HOME/.local/include/fbcp-ili9341/build/" && make -j
-[ ! -f "/usr/bin/fbcp"  ] &&  sudo cp "/home/alpha/.local/include/fbcp-ili9341/build/fbcp-ili9341" "/usr/bin/fbcp"
+[ ! -f "/usr/bin/fbcp"  ] &&  sudo cp "$HOME/.local/include/fbcp-ili9341/build/fbcp-ili9341" "/usr/bin/fbcp"
 sudo cp "$HOME/.local/include/picorder-config/include/fbcpd.service" /etc/systemd/system/fbcpd.service ; 
 sudo systemctl enable fbcpd ;
 sudo systemctl stop fbcpd ; tput cup 0 100
@@ -96,7 +96,7 @@ Conflicts=getty@tty1.service
 [Service]
 Type=simple
 ExecStart=/usr/bin/python3 main.py
-WorkingDirectory=/home/alpha/.local/include/picorderOS/
+WorkingDirectory=$HOME/.local/include/picorderOS/
 StandardInput=tty-force
 
 [Install]
