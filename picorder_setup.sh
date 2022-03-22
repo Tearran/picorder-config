@@ -95,7 +95,7 @@ sudo systemctl start fbcpd ; tput cup 0 100  |  whiptail --infobox "Display serv
 {
 cd "$HOME/.local/include/picorder-config/" || exit
 
-cat << 'OSEOF' > picorderosd.service
+cat << OSEOF > picorderosd.service
 [Unit]
 Description=Starts picorderOS
 After=multi-user.target
