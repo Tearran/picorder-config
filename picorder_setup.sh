@@ -15,7 +15,6 @@ if [ $theme = "dark:0" ]; then
     actsellistbox=black,yellow
     border=blue,black
     actbutton=black,green
-    button=black,blue
     '
 fi
 }
@@ -29,7 +28,7 @@ fi
 #hdmi_force_hotplug=1
 
 tput cup 0 100  |  whiptail --infobox "Setting things up...." 20 66;
-rm -f $HOME/.bash_logout # For development; Save the bash history for referance.
+rm -f "$HOME/.bash_logout" # For development; Save the bash history for referance.
 whiptail --infobox "Setting Boot to CLI...." 10 100
 tput cup 0 100  |  whiptail --infobox "Setting Boot to cli...." 20 66;
 sudo raspi-config nonint do_boot_behaviour B2 # Change to cli auto login
@@ -39,7 +38,7 @@ sudo raspi-config nonint do_i2c 1 #enable i2c
 # rm -r Bookshelf/ Desktop/ Documents/ Music/ Pictures/ Public/ Templates/ Videos/ Downloads/
 
 tput cup 0 100  |  whiptail --infobox "Update system repository...." 20 66;
-sudo apt update
+sudo apt update &>> lkars.log
 tput cup 0 100  |  whiptail --infobox "Download source code...." 20 66;
 sudo apt install -y git 
 
@@ -51,29 +50,37 @@ echo "........................................."
 [ -d "$HOME/.local/bin/" ] ||  mkdir "$HOME/.local/bin/"
 [ -d "$HOME/.local/lib/" ] || mkdir "$HOME/.local/lib/"
 [ -d "$HOME/.local/include/" ] ||  mkdir "$HOME/.local/include/"
+
 echo "........................................."
 echo " system envoroment complete"  |  whiptail --infobox "Base apt requierments met...." 20 66;
 echo "........................................."
+
 [ ! -d "$HOME/.local/include/picorder-config" ] && cd "$HOME/.local/include/" && git clone https://github.com/Tearran/picorder-config.git
 sudo cp /usr/share/plymouth/themes/pix/splash.png /usr/share/plymouth/themes/pix/splash.png.back
 sudo cp "$HOME/.local/include/picorder-config/include/splash.png" /usr/share/plymouth/themes/pix/splash.png
 sudo cp "$HOME/.local/include/picorder-config/include/config.txt" /boot/config.txt  || echo "error Display /boot/config.txt" 
 cp "$HOME/.local/include/picorder-config/include/picorder.ini" "$HOME/.local/include/picorderOS/"
+
 echo "........................................."
 echo " picorder-config source Downloaded"  |  whiptail --infobox "picorder-config source Downloaded...." 20 66;
 echo "........................................."
+
 [ ! -d "$HOME/.local/include/picorderOS" ] && cd "$HOME"/.local/include/ && git clone https://github.com/directive0/picorderOS.git
 cp "$HOME/.local/include/picorder-config/picorder.ini" "$HOME/.local/include/picorderOS/picorder.ini"
 sudo apt install -y python3-pip python3-smbus sense-hat
+
 echo "........................................."
 echo " picorderOS source Downloaded" 
 echo "........................................."
+
 [ ! -d "$HOME/.local/include/fbcp-ili9341" ] && cd "$HOME/.local/include/" && git clone https://github.com/juj/fbcp-ili9341
 #[ ! -d "$HOME/.local/include/fbcp-ili9341" ] && cd "$HOME/.local/include/" && git clone https://github.com/Tearran/fbcp-ili9341.git
 [ -d "$HOME/.local/include/fbcp-ili9341/build" ] || cd "$HOME/.local/include/fbcp-ili9341" && mkdir build
+
 echo "........................................."
 echo " Framebuffer Copy source Downloaded"
 echo "........................................."
+
 tput cup 0 100  |  whiptail --infobox "Setting Display up...." 20 66;
 sudo apt install -y cmake 
 [ -d "$HOME/.local/include/fbcp-ili9341/build/" ] && cd "$HOME/.local/include/fbcp-ili9341/build/" || exit 1
@@ -87,16 +94,16 @@ sudo systemctl start fbcpd ; tput cup 0 100  |  whiptail --infobox "Display serv
 
 {
 cd "$HOME/.local/include/picorder-config/" || exit
+
 cat << 'OSEOF' > picorderosd.service
 [Unit]
 Description=Starts picorderOS
 After=multi-user.target
-Conflicts=getty@tty1.service
           
 [Service]
 Type=simple
 ExecStart=/usr/bin/python3 main.py
-WorkingDirectory=$HOME/.local/include/picorderOS/
+echo WorkingDirectory=$HOME/.local/include/picorderOS/
 StandardInput=tty-force
 
 [Install]
@@ -105,10 +112,11 @@ OSEOF
 
 [ -f /etc/systemd/system/picorderosd.service ] && sudo systemctl disable picorderosd ;
 sudo mv "$HOME/.local/include/picorder-config/picorderosd.service" /etc/systemd/system/ 
-sudo systemctl enable picorderosd ;
-sudo systemctl start picorderosd ;
+sudo systemctl enable picorderosd |  whiptail --infobox "Enable picorderosd service...." 20 66;
+sudo systemctl start picorderosd |  whiptail --infobox "Starting picorderosd service...." 20 66;
 }
 
+#sudo apt purge 
 sudo apt install -y libmediainfo-dev libatlas-base-dev libopenjp2-7-dev libsdl2-dev libtiff5 libsdl-ttf2.0-dev  libsdl-gfx1.2-5 libsdl-image1.2 libsdl-kitchensink1 libsdl-mixer1.2 libsdl-sound1.2 libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0
 cd "$HOME"/.local/include/picorderOS && sudo /usr/bin/python3 -m pip install -r requirements.txt
 if whiptail --yesno "Instaltion complete! Reboot?" 10 100 --defaultno; then echo "Yes! Rebooting"; sudo reboot; else echo "No !"; exit 0; fi
