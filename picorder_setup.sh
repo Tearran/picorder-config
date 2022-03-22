@@ -18,14 +18,6 @@ if [ $theme = "dark:0" ]; then
     '
 fi
 }
-#TODO
-# Configuring display size will affect both HDMI and TFT
-# Following append to /boot/config.txt
-#disable_overscan=1
-#hdmi_group=2
-#hdmi_mode=87
-#hdmi_cvt=160 128 60 1 0 0 0
-#hdmi_force_hotplug=1
 
 tput cup 0 100  |  whiptail --infobox "Setting things up...." 20 66;
 rm -f "$HOME/.bash_logout" # For development; Save the bash history for referance.
@@ -33,14 +25,14 @@ whiptail --infobox "Setting Boot to CLI...." 10 100
 tput cup 0 100  |  whiptail --infobox "Setting Boot to cli...." 20 66;
 sudo raspi-config nonint do_boot_behaviour B2 # Change to cli auto login
 sudo raspi-config nonint do_i2c 1 #enable i2c
-#sudo sed -i -e 's/rootwait/logo.nologo rootwait/g'   /boot/config.txt || echo "error config"
-# uncomment to Unclutter home removing unused folders 
+
 # rm -r Bookshelf/ Desktop/ Documents/ Music/ Pictures/ Public/ Templates/ Videos/ Downloads/
 
 tput cup 0 100  |  whiptail --infobox "Update system repository...." 20 66;
 sudo apt update &>> lkars.log
 tput cup 0 100  |  whiptail --infobox "Download source code...." 20 66;
-sudo apt install -y git 
+sudo apt purge python3-cap1xxx python3-envirophat python3-pillow python3-pygame python3-numpy python3-psutil
+sudo apt install -y git cmake
 
 echo "........................................."
 echo " apt requierments complete" |  whiptail --infobox "Base apt requierments met...." 20 66;
@@ -52,13 +44,13 @@ echo "........................................."
 [ -d "$HOME/.local/include/" ] ||  mkdir "$HOME/.local/include/"
 
 echo "........................................."
-echo " system envoroment complete"  |  whiptail --infobox "Base apt requierments met...." 20 66;
+echo " system envoroment complete"  |  whiptail --infobox "Base envirpment met...." 20 66;
 echo "........................................."
 
 [ ! -d "$HOME/.local/include/picorder-config" ] && cd "$HOME/.local/include/" && git clone https://github.com/Tearran/picorder-config.git
 sudo cp /usr/share/plymouth/themes/pix/splash.png /usr/share/plymouth/themes/pix/splash.png.back
 sudo cp "$HOME/.local/include/picorder-config/include/splash.png" /usr/share/plymouth/themes/pix/splash.png
-sudo cp "$HOME/.local/include/picorder-config/include/config.txt" /boot/config.txt  || echo "error Display /boot/config.txt" 
+sudo cp "$HOME/.local/include/picorder-config/include/config.txt" /boot/config.txt  || echo "error Display /boot/config.txt"
 cp "$HOME/.local/include/picorder-config/include/picorder.ini" "$HOME/.local/include/picorderOS/"
 
 echo "........................................."
@@ -67,10 +59,10 @@ echo "........................................."
 
 [ ! -d "$HOME/.local/include/picorderOS" ] && cd "$HOME"/.local/include/ && git clone https://github.com/directive0/picorderOS.git
 cp "$HOME/.local/include/picorder-config/picorder.ini" "$HOME/.local/include/picorderOS/picorder.ini"
-sudo apt install -y python3-pip python3-smbus sense-hat
+sudo apt install -y python3-pip
 
 echo "........................................."
-echo " picorderOS source Downloaded" 
+echo " picorderOS source Downloaded"
 echo "........................................."
 
 [ ! -d "$HOME/.local/include/fbcp-ili9341" ] && cd "$HOME/.local/include/" && git clone https://github.com/juj/fbcp-ili9341
@@ -82,12 +74,11 @@ echo " Framebuffer Copy source Downloaded"
 echo "........................................."
 
 tput cup 0 100  |  whiptail --infobox "Setting Display up...." 20 66;
-sudo apt install -y cmake 
 [ -d "$HOME/.local/include/fbcp-ili9341/build/" ] && cd "$HOME/.local/include/fbcp-ili9341/build/" || exit 1
 [ -d "$HOME/.local/include/fbcp-ili9341/build/" ] && cmake -Wno-dev -DST7735R=ON -DGPIO_TFT_BACKLIGHT=18 -DGPIO_TFT_RESET_PIN=24 -DGPIO_TFT_DATA_CONTROL=23 -DSPI_BUS_CLOCK_DIVISOR=8 -DSTATISTICS=0 -DDISPLAY_SWAP_BGR=ON -DDISPLAY_INVERT_COLORS=OFF ..
 [ -d "$HOME/.local/include/fbcp-ili9341/build/" ] && cd "$HOME/.local/include/fbcp-ili9341/build/" && make -j
 [ ! -f "/usr/bin/fbcp"  ] &&  sudo cp "$HOME/.local/include/fbcp-ili9341/build/fbcp-ili9341" "/usr/bin/fbcp"
-sudo cp "$HOME/.local/include/picorder-config/include/fbcpd.service" /etc/systemd/system/fbcpd.service ; 
+sudo cp "$HOME/.local/include/picorder-config/include/fbcpd.service" /etc/systemd/system/fbcpd.service ;
 sudo systemctl enable fbcpd ;
 sudo systemctl stop fbcpd ; tput cup 0 100
 sudo systemctl start fbcpd ; tput cup 0 100  |  whiptail --infobox "Display server set...." 20 66;
@@ -99,11 +90,11 @@ cat << OSEOF > picorderosd.service
 [Unit]
 Description=Starts picorderOS
 After=multi-user.target
-          
+
 [Service]
 Type=simple
 ExecStart=/usr/bin/python3 main.py
-echo WorkingDirectory=$HOME/.local/include/picorderOS/
+WorkingDirectory=$HOME/.local/include/picorderOS/
 StandardInput=tty-force
 
 [Install]
@@ -111,12 +102,12 @@ WantedBy=multi-user.target
 OSEOF
 
 [ -f /etc/systemd/system/picorderosd.service ] && sudo systemctl disable picorderosd ;
-sudo mv "$HOME/.local/include/picorder-config/picorderosd.service" /etc/systemd/system/ 
+sudo mv "$HOME/.local/include/picorder-config/picorderosd.service" /etc/systemd/system/
 sudo systemctl enable picorderosd |  whiptail --infobox "Enable picorderosd service...." 20 66;
 sudo systemctl start picorderosd |  whiptail --infobox "Starting picorderosd service...." 20 66;
 }
 
-#sudo apt purge 
+#sudo apt purge
 sudo apt install -y libmediainfo-dev libatlas-base-dev libopenjp2-7-dev libsdl2-dev libtiff5 libsdl-ttf2.0-dev  libsdl-gfx1.2-5 libsdl-image1.2 libsdl-kitchensink1 libsdl-mixer1.2 libsdl-sound1.2 libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0
 cd "$HOME"/.local/include/picorderOS && sudo /usr/bin/python3 -m pip install -r requirements.txt
 if whiptail --yesno "Instaltion complete! Reboot?" 10 100 --defaultno; then echo "Yes! Rebooting"; sudo reboot; else echo "No !"; exit 0; fi
