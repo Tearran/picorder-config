@@ -8,11 +8,16 @@ Curl
 curl https://raw.githubusercontent.com/Tearran/picorder-config/master/picorder_setup.sh | bash
 ``` 
 wget
-```sh 
+```bash 
 wget https://raw.githubusercontent.com/Tearran/picorder-config/master/picorder_setup.sh
 chmod +x picorder-setup
 sh ./picorder-setup
 ```
+Restore to default /boot/config.txt
+```bash
+curl https://raw.githubusercontent.com/Tearran/picorder-config/master/restore_bootconfig | sudo bash
+```
+
 # Features
 
 - Enable i2c
