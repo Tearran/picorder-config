@@ -21,13 +21,12 @@ curl https://raw.githubusercontent.com/Tearran/picorder-config/master/restore_bo
 # Features
 
 - Enable i2c
-- Enable spi
-- Add Userspace "$HOME/.local/bin" to path 
+- ~~Enable spi~~
+- ~~Add Userspace "$HOME/.local/bin" to path~~ 
 - Download and install picorderOs source
 - Install requiered system libraries
 - Install requiered python libraries
-- Install piCoerderOS System launcher "$HOME/.local/bin/piCoerderOS"
+- Install piCoerderOS System launcher "/usr/bin/piCoerderOS"
 - Install picoerder-config System launcher
-  - Menu base
   - todo: setting "$HOME/.local/include/picorderOS/picorder.ini"
   - todo: setting "/boot/config.txt"
