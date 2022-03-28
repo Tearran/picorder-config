@@ -60,7 +60,7 @@ echo "........................................."
 cp "$HOME/.local/include/picorder-config/picorder.ini" "$HOME/.local/include/picorderOS/picorder.ini"
 
 echo "........................................."
-echo " picorderOS source Downloaded"
+echo " picorderOS source Downloaded "       |  whiptail --infobox "picorderOS source Downloaded...." 20 66;
 echo "........................................."
 
 [ ! -d "$HOME/.local/include/fbcp-ili9341" ] && cd "$HOME/.local/include/" && git clone https://github.com/juj/fbcp-ili9341
@@ -68,7 +68,7 @@ echo "........................................."
 [ -d "$HOME/.local/include/fbcp-ili9341/build" ] || cd "$HOME/.local/include/fbcp-ili9341" && mkdir build
 
 echo "........................................."
-echo " Framebuffer Copy source Downloaded"
+echo " Framebuffer Copy source Downloaded"   |  whiptail --infobox "Framebuffer Copy source Downloaded...." 20 66;
 echo "........................................."
 
 tput cup 0 100  |  whiptail --infobox "Setting Display up...." 20 66;
