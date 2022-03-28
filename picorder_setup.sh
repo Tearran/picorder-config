@@ -23,19 +23,19 @@ tput cup 0 100  |  whiptail --infobox "Setting things up...." 20 66;
 rm -f "$HOME/.bash_logout" # For development; Save the bash history for referance.
 whiptail --infobox "Setting Boot to CLI...." 10 100
 tput cup 0 100  |  whiptail --infobox "Setting Boot to cli...." 20 66;
-sudo raspi-config nonint do_boot_behaviour B2 # Change to cli auto login
+#sudo raspi-config nonint do_boot_behaviour B2 # Change to cli auto login
 sudo raspi-config nonint do_i2c 1 #enable i2c
 
 # rm -r Bookshelf/ Desktop/ Documents/ Music/ Pictures/ Public/ Templates/ Videos/ Downloads/
 
 tput cup 0 100  |  whiptail --infobox "Update system repository...." 20 66;
-sudo apt update &>> lkars.log
+sudo apt update
 tput cup 0 100  |  whiptail --infobox "Download source code...." 20 66;
 sudo apt purge python3-cap1xxx python3-envirophat python3-pillow python3-pygame python3-numpy python3-psutil
 sudo apt install -y git cmake
 
 echo "........................................."
-echo " apt requierments complete" |  whiptail --infobox "removed confilctine apt packages...." 20 66;
+echo " apt requierments complete" |  whiptail --infobox "apt requierments complete...." 20 66;
 echo "........................................."
 
 [ -d "$HOME/.local/" ] ||  mkdir "$HOME/.local/"
@@ -44,7 +44,7 @@ echo "........................................."
 [ -d "$HOME/.local/include/" ] ||  mkdir "$HOME/.local/include/"
 
 echo "........................................."
-echo " system envoroment complete"  |  whiptail --infobox "Base envirpment met...." 20 66;
+echo " system envoroment complete "  |  whiptail --infobox "system envoroment complete...." 20 66;
 echo "........................................."
 
 [ ! -d "$HOME/.local/include/picorder-config" ] && cd "$HOME/.local/include/" && git clone https://github.com/Tearran/picorder-config.git
@@ -54,7 +54,7 @@ sudo cp "$HOME/.local/include/picorder-config/include/config.txt" /boot/config.t
 cp "$HOME/.local/include/picorder-config/include/picorder.ini" "$HOME/.local/include/picorderOS/"
 
 echo "........................................."
-echo " picorder-config source Downloaded"  |  whiptail --infobox "picorder-config source Downloaded...." 20 66;
+echo " picorder-config source Downloaded "  |  whiptail --infobox "picorder-config source Downloaded...." 20 66;
 echo "........................................."
 
 [ ! -d "$HOME/.local/include/picorderOS" ] && cd "$HOME"/.local/include/ && git clone https://github.com/directive0/picorderOS.git
@@ -78,13 +78,13 @@ tput cup 0 100  |  whiptail --infobox "Setting Display up...." 20 66;
 [ -d "$HOME/.local/include/fbcp-ili9341/build/" ] && cmake -Wno-dev -DST7735R=ON -DGPIO_TFT_BACKLIGHT=18 -DGPIO_TFT_RESET_PIN=24 -DGPIO_TFT_DATA_CONTROL=23 -DSPI_BUS_CLOCK_DIVISOR=8 -DSTATISTICS=0 -DDISPLAY_SWAP_BGR=ON -DDISPLAY_INVERT_COLORS=OFF ..
 [ -d "$HOME/.local/include/fbcp-ili9341/build/" ] && cd "$HOME/.local/include/fbcp-ili9341/build/" && make -j
 [ ! -f "/usr/bin/fbcp"  ] &&  sudo cp "$HOME/.local/include/fbcp-ili9341/build/fbcp-ili9341" "/usr/bin/fbcp"
-sudo cp "$HOME/.local/include/picorder-config/include/fbcpd.service" /etc/systemd/system/fbcpd.service ;
-sudo systemctl enable fbcpd ;
-sudo systemctl stop fbcpd ; tput cup 0 100
-sudo systemctl start fbcpd ; tput cup 0 100  |  whiptail --infobox "Display server set...." 20 66;
+#sudo cp "$HOME/.local/include/picorder-config/include/fbcpd.service" /etc/systemd/system/fbcpd.service ;
+#sudo systemctl enable fbcpd ;
+#sudo systemctl stop fbcpd ; tput cup 0 100
+#sudo systemctl start fbcpd ; tput cup 0 100  |  whiptail --infobox "Display server set...." 20 66;
 
 {
-cd "$HOME/.local/include/picorder-config/" || exit
+cd "$HOME/.local/include/picorder-config/" || exit 0
 
 cat << OSEOF > picorderosd.service
 [Unit]
