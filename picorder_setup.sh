@@ -31,8 +31,7 @@ sudo raspi-config nonint do_i2c 1 #enable i2c
 tput cup 0 100  |  whiptail --infobox "Update system repository...." 20 66;
 sudo apt update
 tput cup 0 100  |  whiptail --infobox "Download source code...." 20 66;
-sudo apt purge python3-cap1xxx python3-envirophat python3-pillow python3-pygame python3-numpy python3-psutil
-sudo apt install -y git cmake
+sudo apt install -y git cmake python3-pip
 
 echo "........................................."
 echo " apt requierments complete" |  whiptail --infobox "apt requierments complete...." 20 66;
@@ -59,7 +58,6 @@ echo "........................................."
 
 [ ! -d "$HOME/.local/include/picorderOS" ] && cd "$HOME"/.local/include/ && git clone https://github.com/directive0/picorderOS.git
 cp "$HOME/.local/include/picorder-config/picorder.ini" "$HOME/.local/include/picorderOS/picorder.ini"
-sudo apt install -y python3-pip
 
 echo "........................................."
 echo " picorderOS source Downloaded"
@@ -106,7 +104,7 @@ sudo mv "$HOME/.local/include/picorder-config/picorderosd.service" /etc/systemd/
 sudo systemctl enable picorderosd |  whiptail --infobox "Enable picorderosd service...." 20 66;
 }
 
-#sudo apt purge
+# sudo apt purge python3-cap1xxx python3-envirophat python3-pillow python3-pygame python3-numpy python3-psutil
 sudo apt install -y libmediainfo-dev libatlas-base-dev libopenjp2-7-dev libsdl2-dev libtiff5 libsdl-ttf2.0-dev  libsdl-gfx1.2-5 libsdl-image1.2 libsdl-kitchensink1 libsdl-mixer1.2 libsdl-sound1.2 libsdl-ttf2.0-0 libsdl1.2debian libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-ttf-2.0-0
 cd "$HOME"/.local/include/picorderOS && sudo /usr/bin/python3 -m pip install -r requirements.txt
 sudo systemctl start picorderosd |  whiptail --infobox "Starting picorderosd service...." 20 66;
