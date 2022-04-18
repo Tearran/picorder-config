@@ -76,9 +76,10 @@ max_framebuffers=2
 
 OSEOF
 
-sudo mv /boot/config.txt /boot/config.bak
+#Set new configuration
+sudo cp --no-preserve=mode -f /boot/config.txt /boot/config.bak
 echo "Back up exitsing config"
-sudo mv "$HOME/config.txt" /boot/config.txt
+sudo cp --no-preserve=mode -f "$HOME/config.txt" /boot/config.txt
 echo "Restore Complete!"
 
 }
